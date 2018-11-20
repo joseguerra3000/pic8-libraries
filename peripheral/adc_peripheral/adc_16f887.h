@@ -308,9 +308,6 @@ adc_result_t ADC_GetConversionResult();
 void ADC_StopConversion();
 #define ADC_StopConversion() do{ ADCON0bits.ADON = 0; } while(0)
 
- 
-extern void ADC_SampleDelay();
- 
 #ifdef __cplusplus  // Provide C++ Compatibility
 
     }
