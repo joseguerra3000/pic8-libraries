@@ -31,24 +31,6 @@
     extern "C" {
 
 #endif
-
-
-
-/**
-  Section: Macros
-*/
-#define SPI_SDI_TRIS TRISCbits.TRISC4
-#define SPI_SDI_PORT PORTCbits.RC4
-
-#define SPI_SDO_TRIS TRISCbits.TRISC5
-#define SPI_SDO_PORT PORTCbits.RC5
-
-#define SPI_SCK_TRIS TRISCbits.TRISC3
-#define SPI_SCK_PORT PORTCbits.RC3
-
-#define SPI_SS_TRIS TRISAbits.TRISA5
-#define SPI_SS_PORT PORTAbits.RA5
-
         
 /**
   Section: Data Types Definitions
@@ -131,22 +113,7 @@ typedef enum{
 
     </code>
 */
-void SPI_InitializeMaster( SPI_CLOCK_RATE bitRate, SPI_CLOCK_POLARITY clkPolarity, SPI_OUTPUT_DATA_PHASE clkEdge, SPI_INPUT_SAMPLING_PHASE inSample){
-    SSPCON = 0;                 // Power off the SSP module
-    
-    SPI_SDO_TRIS = OUTPUT;      // configure SDO pin as output
-    SPI_SCK_TRIS = OUTPUT;      // configure SCK pin as output
-    SPI_SDI_TRIS = INPUT;
-    
-    SSPCON |= bitRate;          // set the SSP module as SPI and the selected bit rate.
-	SSPCON |= clkPolarity;      // set the CKP bit value
- 
-    SSPSTAT |= clkEdge;         // set the CKE bit value
-    SSPSTAT |= inSample;        // set the SMP bit value
-    
-    SSPCON |= _SSPCON_SSPEN_MASK; // Power on the SSP module
-   // SSPSTATbits.BF = 1;
-}
+void SPI_InitializeMaster( SPI_CLOCK_RATE bitRate, SPI_CLOCK_POLARITY clkPolarity, SPI_OUTPUT_DATA_PHASE clkEdge, SPI_INPUT_SAMPLING_PHASE inSample);
 
 
 /**
@@ -176,11 +143,7 @@ void SPI_InitializeMaster( SPI_CLOCK_RATE bitRate, SPI_CLOCK_POLARITY clkPolarit
     SPI_WriteByte( 0x45 );
     </code>
 */
-inline void SPI_WriteByte( uint8_t byte ){
-    while( !(SSPSTAT & _SSPSTAT_BF_MASK) );
-    SSPBUF;                                  
-    SSPBUF = (byte);                         
-}
+inline void SPI_WriteByte( uint8_t byte );
 
 /**
   @Summary
@@ -228,11 +191,7 @@ inline void SPI_WriteByte( uint8_t byte ){
  uint8_t data_rx = SPI_ReadByte();
     </code>
  */
-uint8_t SPI_ReadByte( ){
-    while( !(SSPSTAT & _SSPSTAT_BF_MASK) );
-    return SSPBUF;
-}
-
+uint8_t SPI_ReadByte( );
 
  
 #ifdef __cplusplus  // Provide C++ Compatibility
