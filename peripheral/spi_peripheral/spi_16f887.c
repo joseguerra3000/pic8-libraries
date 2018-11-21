@@ -74,6 +74,7 @@ void SPI_InitializeMaster( SPI_CLOCK_RATE bitRate, SPI_CLOCK_POLARITY clkPolarit
     SSPSTAT |= inSample;        // set the SMP bit value
     
     SSPCON |= _SSPCON_SSPEN_MASK; // Power on the SSP module
+    SSPBUF = 0;
    // SSPSTATbits.BF = 1;
 }
 
@@ -84,6 +85,11 @@ inline void SPI_WriteByte( uint8_t byte ){
     SSPBUF = (byte);                         
 }
 
+
+/* See header file for especifications */
+inline bool SPI_IsBusy() {
+    return ((SSPSTAT & _SSPSTAT_BF_MASK)?0u:1u);
+} 
 
 /* See header file for especifications */
 uint8_t SPI_ReadByte( ){

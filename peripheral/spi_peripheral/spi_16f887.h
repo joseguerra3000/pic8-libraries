@@ -167,7 +167,7 @@ inline void SPI_WriteByte( uint8_t byte );
  bool status = SPI_IsBusy();
     </code>
 */
-#define SPI_IsBusy() ((SSPSTAT & _SSPSTAT_BF_MASK)?0:1) 
+inline bool SPI_IsBusy( void );
 
 /**
   @Summary
