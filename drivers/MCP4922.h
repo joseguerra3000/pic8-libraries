@@ -47,28 +47,7 @@
  **/
 typedef union{
 	uint16_t cmd;
-    struct{
-        /**
-         * DAC Data bits: Digital Value for Analog output
-         */
-        uint16_t Data : 12;
-        /**
-         * Output Power Control Bit
-         */
-        unsigned SHDN : 1;
-        /**
-         * Output Gain Select Bit
-         */
-        unsigned GA   : 1;
-        /**
-         * Vref Input Buffer Control bit
-         */
-        unsigned BUF  : 1;
-        /**
-         * DAC Select bit
-         */
-        unsigned A_B  : 1;
-    };
+    
     struct {
         uint8_t lowerByte;
         uint8_t upperByte;
@@ -86,12 +65,12 @@ typedef struct{
     /**
      * Routine used for send one byte using SPI interface
      */
-    uint8_t (*SendCommand)( uint8_t byte );
+    void (*SendCommand)( uint8_t byte );
 
     /**
      * Routine used for check SPI buffer state
      */
-    void (*IsBusy)( void );
+    bool (*IsBusy)( void );
 
     /**
      * Port used for SS/CS pin
@@ -109,9 +88,9 @@ typedef struct{
  * MCP4922 Select DAC
  */
 typedef enum{
-    MCP_ADC_SELECT_A = 0x00,
-    MCP_ADC_SELECT_B = 0x80
-} MCP_ADC_SELECT;
+    MCP_DAC_SELECT_A = 0x00,
+    MCP_DAC_SELECT_B = 0x80
+} MCP_DAC_SELECT;
 
 /**
  * MCP4922 VREF BUFFER 
@@ -128,6 +107,12 @@ typedef enum{
     MCP_GAIN_x2 = 0x00,
     MCP_GAIN_x1 = 0x20 
 } MCP_GAIN;
+
+typedef enum{
+    MCP_OUTPUT_CONTROL_BUFFER_DISABLED = 0x00,
+    MCP_OUTPUT_CONTROL_BUFFER_ENABLED  = 0x10
+            
+}MCP_OUTPUT_CONTROL;
 
 /******************************************************************************
  ************************ Section: MCP4922 Module APIs ************************
@@ -169,7 +154,7 @@ typedef enum{
     two = MCP4922_MCP4922( &PORTC, 0, SPI_WriteByte, SPI_IsBusy );
     </code>
 */
-MCP4922_t MCP4922_MCP4922( volatile uint8_t *port, uint8_t bit, void (*SendByte)( uint8_t ), bool (*IsBusy)(void) );
+MCP4922_t MCP4922_MCP4922( volatile uint8_t *SSport, uint8_t SSbit, void (*SendByte)( uint8_t ), bool (*IsBusy)(void) );
 
 /**
   @Summary
@@ -278,7 +263,7 @@ bool MCP4922_SetConfiguration( MCP_VREF_BUFF vrefBuf, MCP_GAIN gain);
     }
     </code>
 */
-bool MCP4922_WriteData( MCP_ADC_SELECT adc,  uint16_t data );
+bool MCP4922_WriteData( MCP_DAC_SELECT adc,  uint16_t data );
 
 
 #ifdef __cplusplus  // Provide C++ Compatibility
