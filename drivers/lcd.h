@@ -22,10 +22,7 @@
  *********************** Section: Included Files ******************************
  ******************************************************************************/
 
-#include <xc.h>
 #include <stdint.h>
-#include <stdbool.h>
-#include "../utils.h"
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 
@@ -37,7 +34,7 @@
  ********************* Section: Configuration Options *************************
  ******************************************************************************/
 
-#define LCD_INTERFAZE_4BITS  //Uncomment this line for use the 4Bits Interfaze     
+//#define LCD_INTERFAZE_4BITS  //Uncomment this line for use the 4Bits Interfaze     
 //#define LCD_USE_RW //Comment this line for use LCD without RW line.
                    // This pin need be grounded if you commment the line
 

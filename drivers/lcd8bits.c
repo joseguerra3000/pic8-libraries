@@ -24,7 +24,6 @@
 #ifndef LCD_INTERFAZE_4BITS 
 
 #include <xc.h>
-#include <stdarg.h>
 #include <stdio.h>
 #include "../hardware.h"
 #include "../utils.h"
@@ -66,9 +65,9 @@ uint8_t RW;
  to LCD.
 */
 static void lcd_strobe(){ 
-    LCD_ControlBus |= 1<<EN;
+    LCD_ControlBus |= 1u<<EN;
 	__delay_us(10);                          
-    LCD_ControlBus &= ~(1<<EN);
+    LCD_ControlBus &= ~(1u<<EN);
 }
 
 /**
@@ -114,7 +113,7 @@ static void lcd_SendDataSignal(){
     if RW is not used this routine make a delay of 1ms
     
 */
-static bool lcd_BusyCheck(){
+static void lcd_BusyCheck(){
 #ifdef LCD_USE_RW
     uint8_t busyFlag;
     LCD_DataBusDirection = DataMask; // Configure DataBus as digital inputs
@@ -198,6 +197,7 @@ volatile uint8_t* lcd_GetTrisAddress( volatile uint8_t *port ){
 	if( port == &PORTE )
 		return &TRISE;
 	#endif
+    return NULL;
 }
 
 /* See header file for especifications */
@@ -260,10 +260,10 @@ void LCD_CommandWrite( LCD_CMD cmd ){
 }
 
 /* See header file for especifications */
-void LCD_Clear( ){
+/*void LCD_Clear( ){
     LCD_CommandWrite( LCD_CMD_CLEAR_DISPLAY );
     LCD_CommandWrite(LCD_CMD_RETURN_HOME);
-}
+}*/
 
 /* See header file for especifications */
 void LCD_PrintString(char* str){

@@ -22,10 +22,8 @@
  *********************** Section: Included Files ******************************
  ******************************************************************************/
 
-#include <xc.h>
 #include <stdint.h>
 #include <stdbool.h>
-#include "../utils.h"
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

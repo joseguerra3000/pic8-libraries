@@ -10,7 +10,6 @@
 #ifndef _HARDWARE_H
 #define	_HARDWARE_H
 
-#include <xc.h> // include processor files - each processor file is guarded.  
 
 #ifdef PIC_TRAINER_WAR_MINI
  #include "hardware/hardware_war_mini.h"

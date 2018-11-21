@@ -22,7 +22,6 @@
 
 #include <xc.h>
 #include "../spi.h"
-#include "../../hardware.h"
 #include "../../utils.h"
 
 

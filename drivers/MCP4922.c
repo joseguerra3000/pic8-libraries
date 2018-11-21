@@ -24,7 +24,6 @@
 #include "MCP4922.h"
 #include <xc.h>
 #include <stddef.h>
-#include "../hardware.h"
 #include "../utils.h"
 /******************************************************************************
  ************************** Section: Constants ********************************
