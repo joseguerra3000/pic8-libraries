@@ -60,7 +60,7 @@
  *      Los pines utilizados son definidos mediante la funcion de inicializacion
  * 
  **/
-#define HCMS_29xx_VERSION __HCMS_29xx_LITE_VERSION 
+#define HCMS_29xx_VERSION __HCMS_29xx_NORMAL_VERSION
 
 
 
