@@ -26,7 +26,7 @@
 #include <xc.h>
 #include <stdio.h>
 #include "../hardware.h"
-#include "../utils.h"
+#include "../util/utils.h"
 
 /******************************************************************************
  ************************** Section: Constants ********************************

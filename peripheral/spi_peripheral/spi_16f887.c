@@ -22,7 +22,7 @@
 
 #include <xc.h>
 #include "../spi.h"
-#include "../../utils.h"
+#include "../../util/utils.h"
 
 
 /**

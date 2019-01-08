@@ -9,7 +9,7 @@
 #define	_HARDWARE_WAR_MINI_H
 
 #include <xc.h> // include processor files - each processor file is guarded.  
-#include "../utils.h"
+#include "../util/utils.h"
 
 // PIC16F887 Configuration Bit Settings
 // CONFIG1
