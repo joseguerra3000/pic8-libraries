@@ -24,11 +24,11 @@
 #include "HCMS-29xx.h"
 
 #include "HCMS-29xx_config.h"
-#include "num2str.h"
+#include "../util/num2str.h"
 
 #if HCMS_29xx_USE_FONT5X7==1
 
-#include "font5x7.h"
+#include "../util/font5x7.h"
 #define _FONT5x7_CHAR_TO_MAP FONT5x7_CHAR_TO_MAP
 
 #endif
