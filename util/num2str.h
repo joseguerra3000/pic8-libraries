@@ -1,12 +1,14 @@
 /* 
  * File:   num2str.h
- * Author: root
+ * Author: Jose Guerra Carmenate
  *
- * Created on 5 de enero de 2019, 20:18
+ * @Description:
+ * This header contain a set of routines prototypes for store numbers on 
+ * string.
  */
 
-#ifndef STRING_CONVERT_H
-#define	STRING_CONVERT_H
+#ifndef NUM2STR_H
+#define	NUM2STR_H
 
 #include <stdint.h>
 

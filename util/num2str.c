@@ -1,8 +1,11 @@
 /* 
  * File:   num2str.c
- * Author: root
+ * Author: Jose Guerra Carmenate
  *
  * Created on 5 de enero de 2019, 20:18
+ * @Description
+ *  This header contain a set of routines implementations for store numbers on 
+ * string.
  */
 
 #include <stdint.h>
