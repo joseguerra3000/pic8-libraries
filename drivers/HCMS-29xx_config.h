@@ -121,8 +121,8 @@
 
 
 /** Compilar estas funciones( 0 - NO; 1 - SI ) **/
-#define __HCMS_29xx_COMPILE_LedDisplay_Scroll 0
-#define __HCMS_29xx_COMPILE_LedDisplay_GetCursor 0
+#define __HCMS_29xx_COMPILE_LedDisplay_Scroll 1
+#define __HCMS_29xx_COMPILE_LedDisplay_GetCursor 1
 #define __HCMS_29xx_COMPILE_LedDisplay_PrintUInt16 1
 #define __HCMS_29xx_COMPILE_LedDisplay_PrintInt16 1
 #define __HCMS_29xx_COMPILE_LedDisplay_PrintFloat 1

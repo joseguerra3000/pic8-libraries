@@ -21,9 +21,17 @@
     MPLAB             :  MPLAB X 5.10
 */
 
-#include "HCMS-29xx.h"
 
+
+
+/******************************************************************************
+ *********************** Section: Included Files ******************************
+ ******************************************************************************/
 #include "HCMS-29xx_config.h"
+
+#if HCMS_29xx_VERSION == __HCMS_29xx_LITE_VERSION
+
+#include "HCMS-29xx.h"
 #include "../util/num2str.h"
 
 #if HCMS_29xx_USE_FONT5X7==1
@@ -33,8 +41,9 @@
 
 #endif
 
-
-#if HCMS_29xx_VERSION == __HCMS_29xx_LITE_VERSION
+/******************************************************************************
+ ************************ Section: Define Macros ******************************
+ ******************************************************************************/
 
 #define CE _HCMS_29xx_DISPLAY_CE
 #define CLK _HCMS_29xx_DISPLAY_CLK
@@ -54,14 +63,22 @@
 #define RST_Dir _HCMS_29xx_DISPLAY_RST_Dir
 #endif
 
-char *displayBuffer;
-uint8_t bufferSize;
-uint8_t displayLen;
-uint8_t cursorPosition;
+/******************************************************************************
+ ************************** Section: Local Vars *******************************
+ ******************************************************************************/
 
-#if __HCMS_29xx_COMPILE_LedDisplay_Scroll==1
+static char *displayBuffer;
+static uint8_t bufferSize;
+static uint8_t displayLen;
+static uint8_t cursorPosition;
+
+#if __HCMS_29xx_COMPILE_LedDisplay_Scroll == 1
 int8_t cursorShift;
 #endif
+
+/******************************************************************************
+ ********************* Section: HCMS-29xx Display APIs ************************
+ ******************************************************************************/
 
 /** See header for more information **/
 void LedDisplay_LoadControlRegister( uint8_t controlWord ){
@@ -88,7 +105,7 @@ void LedDisplay_LoadControlRegister( uint8_t controlWord ){
 /** See header for more information **/
 void LedDisplay_LoadAllControlRegisters( uint8_t controlWord ){
     // Every chip drives four characters
-    uint8_t chipCount = displayLen/4u;
+    uint8_t chipCount = displayLen>>2u;
     
     // Configure every chip for simultaneous mode
     for( uint8_t i = 0; i < chipCount; i++ )
@@ -116,8 +133,6 @@ void LedDisplay_LoadDotRegister() {
     }
     CE = 1;
 }
-
-/********************** Interface Functions ***********************/
 
 /** See header for more information **/
 void LedDisplay_Initialize(uint8_t _displayLen, char* _displayBuffer, uint8_t _bufferSize){
@@ -164,8 +179,7 @@ inline void LedDisplay_SetCursor(uint8_t cursorPos){
     cursorPosition = cursorPos;
 }
 
-
-#if (__HCMS_29xx_COMPILE_LedDisplay_GetCursor==1) && (__HCMS_29xx_COMPILE_LedDisplay_SetCursor==1)
+#if (__HCMS_29xx_COMPILE_LedDisplay_GetCursor==1)
 /** See header for more information **/
 inline uint8_t LedDisplay_GetCursor(){
     // get the current cursor position
@@ -211,7 +225,7 @@ void LedDisplay_PutUserChar( const unsigned char *map ){
 void LedDisplay_PrintString( const char *p){
     // load string to buffer
     do{
-        displayBuffer[cursorPosition++] = *(++p);
+        displayBuffer[cursorPosition++] = *(p++);
     }while( *p );
     // load dot register from the buffer
     LedDisplay_LoadDotRegister();

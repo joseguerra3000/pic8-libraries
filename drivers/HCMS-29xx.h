@@ -34,10 +34,18 @@
 #ifndef HCMS_29xx_H
 #define	HCMS_29xx_H
 
+/******************************************************************************
+ *********************** Section: Included Files ******************************
+ ******************************************************************************/
+
 #include <xc.h>
 #include <stdint.h>
 #include "HCMS-29xx_config.h"
 
+
+/******************************************************************************
+ ************************ Section: Define Macros ******************************
+ ******************************************************************************/
 
 #define ALPHA_DISPLAY_MAX_LENGTH 32u
 
@@ -61,12 +69,13 @@
 
 
 
-
 #ifdef	__cplusplus
 extern "C" {
 #endif
-    // Configuration Functions 
     
+/******************************************************************************
+ ********************* Section: HCMS-29xx Display APIs ************************
+ ******************************************************************************/
     
     
     /**
@@ -235,8 +244,7 @@ extern "C" {
     void LedDisplay_LoadAllControlRegisters( uint8_t controlWord );
     
     /** Display Functions **/
-#if HCMS_29xx_USE_FONT5X7==0
-    
+#if HCMS_29xx_USE_FONT5X7 == 0    
     /**
      * @Summary
      *  Take one character an return one pointer to one char array that
