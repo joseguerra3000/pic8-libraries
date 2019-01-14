@@ -165,7 +165,7 @@ extern "C" {
      *  None
      * 
      * @Comments
-     *  In case of multiple the data be loaded with out problems.
+     *  In case of multiple display the data be loaded with out problems.
      * 
      * For example: Imagine two HCMS-2973 Display ( 8 characters every one ) 
      * and no shift operation performed.
@@ -217,7 +217,7 @@ extern "C" {
      **/    
     void LedDisplay_LoadControlRegister( uint8_t controlWord );
     
-        /**
+    /**
      * @Summary
      *  Load one control word on all HCMS-29xx Display.
      * 
