@@ -26,6 +26,11 @@
  #undef _HEADER_NOT_FOUND
 #endif
 
+#ifdef _12f683
+ #include "adc_peripheral/adc_12f683.h"
+ #undef _HEADER_NOT_FOUND
+#endif
+
 #ifdef _HEADER_NOT_FOUND
 #error Device-specific header could not be found for target chip
 #endif
