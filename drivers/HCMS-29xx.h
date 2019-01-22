@@ -516,7 +516,7 @@ extern "C" {
      *  Take one string and print it to the display.
      * 
      * @Description
-     *  This routine, take one string and print it to the display.
+     *  This routine take one string and print it to the display.
      * 
      * @Preconditions
      *  LedDisplay_Initialize routine need be called before.
@@ -580,7 +580,7 @@ extern "C" {
      *  Print a 16-bits unsigned integer number on a specified base on the HCMS-29xx Display.
      * 
      * @Description
-     *  This routine take a number and print it on the HCMS-29xx Display.
+     *  This routine take a number (and a base) to print it on the HCMS-29xx Display.
      * 
      * @Preconditions
      *  LedDisplay_Initialize routine need be called before.
@@ -600,7 +600,7 @@ extern "C" {
      * ...
      * LedDisplay_Initialize( 8, __display_buffer, 16 );
      * LedDisplay_SetBrightness( 12 );
-     * LedDisplay_PrintUInt16( 156 );
+     * LedDisplay_PrintUInt16( 156, 2 ); // print 156 on base 2
      * </code>
      **/
     inline void LedDisplay_PrintUInt16( uint16_t x, uint8_t b );
@@ -613,7 +613,7 @@ extern "C" {
      *  Print a 16-bits integer number on a specified base on the HCMS-29xx Display.
      * 
      * @Description
-     *  This routine take a number and print it on the HCMS-29xx Display.
+     *  This routine take a number (and a base) and print it on the HCMS-29xx Display.
      * 
      * @Preconditions
      *  LedDisplay_Initialize routine need be called before.
@@ -633,7 +633,7 @@ extern "C" {
      * ...
      * LedDisplay_Initialize( 8, __display_buffer, 16 );
      * LedDisplay_SetBrightness( 12 );
-     * LedDisplay_PrintInt16( 156 );
+     * LedDisplay_PrintInt16( 213, 8 ); // print 213 on base 8
      * </code>
      **/
     inline void LedDisplay_PrintInt16( int16_t x, uint8_t b );
@@ -643,7 +643,7 @@ extern "C" {
     
     /**
      * @Summary
-     *  Print a float number on a specified base on the HCMS-29xx Display.
+     *  Print a float number on the HCMS-29xx Display.
      * 
      * @Description
      *  This routine take a float number and print it on the HCMS-29xx Display.
