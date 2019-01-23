@@ -308,11 +308,12 @@ extern "C" {
     
     /**
      * @Summary
-     *  Clear the buffer and display (make all its characters equal to space ' ')
+     *  Clear the display (make all its characters equal to space ' ') and
+     *  positions the cursor in the left side. 
      * 
      * @Description
      *  This routine clear the display makeing all its characters equal to ' '(space),
-     * the buffer will also be cleaned
+     * the buffer will also be cleaned and positions the cursor in the left side.
      * 
      * @Preconditions
      *  LedDisplay_Initialize routine need be called before.

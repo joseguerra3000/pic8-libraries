@@ -165,6 +165,7 @@ void LedDisplay_Initialize(uint8_t _displayLen, char* _displayBuffer, uint8_t _b
 
 /** See header for more information **/
 void LedDisplay_Clear( void ){
+	cursorPosition = 0;
     //fill the buffer with spaces
     for( uint8_t i = 0; i < bufferSize; i++ ){
         displayBuffer[i] = ' ';
@@ -271,3 +272,4 @@ inline void LedDisplay_PrintFloat( float x, uint8_t afterpoint ){
 #endif
 
 #endif// if lite version
+
