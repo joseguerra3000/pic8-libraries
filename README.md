@@ -16,7 +16,7 @@
 
 ### Peripheral 
  Contains routines to manipulate the peripherals of the microcontroller. 
- Internaly poses a folder for every microcontroler suported.
+ Internally poses a folder for every microcontroller supported.
 
 ### Drivers 
  Contains routines for interaction with external components like LCD Display,
@@ -30,7 +30,7 @@
 ## How to use
    1. **Create a New Project (Pick XC8 as compiler)**
    
-   1.1 Go to File>New Project...
+   1.1. Go to File>New Project...
    
    2. **Add libray to your project**
    
