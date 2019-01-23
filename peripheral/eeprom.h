@@ -22,7 +22,7 @@
 
 
 #ifdef _16F887
- #include "eeprom_peripheral/eeprom_16f887.h"
+ #include "eeprom/eeprom_16f887.h"
  #undef _HEADER_NOT_FOUND
 #endif
 

@@ -22,7 +22,7 @@
 
 
 #ifdef _16F887
- #include "spi_peripheral/spi_16f887.h"
+ #include "spi/spi_16f887.h"
  #undef _HEADER_NOT_FOUND
 #endif
 

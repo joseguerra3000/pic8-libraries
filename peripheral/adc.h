@@ -22,12 +22,12 @@
 
 
 #ifdef _16F887
- #include "adc_peripheral/adc_16f887.h"
+ #include "adc/adc_16f887.h"
  #undef _HEADER_NOT_FOUND
 #endif
 
 #ifdef _12f683
- #include "adc_peripheral/adc_12f683.h"
+ #include "adc/adc_12f683.h"
  #undef _HEADER_NOT_FOUND
 #endif
 
