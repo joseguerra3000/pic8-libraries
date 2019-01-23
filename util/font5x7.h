@@ -5,10 +5,15 @@
  * Created on 3 de enero de 2019, 12:44
  */
 
-#ifndef FONT5X7_H
-#define	FONT5X7_H
+#ifndef _FONT5X7_H
+#define	_FONT5X7_H
 
 #define my_max( a,b ) (((a)>(b) )?(a):(b))
+
+/**
+ * @Description
+ *  This macro take one ascii character (range: 32-127) and return a pointer to it 5x7 map 
+ **/
 #define FONT5x7_CHAR_TO_MAP( x ) (font5x7 + (((uint16_t)( my_max(x,32) )-(uint16_t)32)*(uint16_t)5))
 
 #ifdef	__cplusplus
