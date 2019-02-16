@@ -25,7 +25,6 @@
 
 #include <xc.h>
 #include <stdio.h>
-#include "../hardware.h"
 #include "../util/utils.h"
 
 /******************************************************************************
