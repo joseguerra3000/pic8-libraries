@@ -21,10 +21,10 @@
 */
 
 #include <xc.h>
-#include "../adc.h"
 #include "../../hardware.h"
-#include "../../utils.h"
-#include "../pin_manager.h"
+#include "../../util/utils.h"
+#include <stdint.h>
+#include "adc_16f887.h"
 /**
  Section: Constants
 */

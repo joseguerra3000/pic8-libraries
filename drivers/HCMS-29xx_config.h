@@ -83,7 +83,7 @@
  *      Los pines utilizados son definidos mediante la funcion de inicializacion
  * 
  **/
-#define HCMS_29xx_VERSION __HCMS_29xx_NORMAL_VERSION
+#define HCMS_29xx_VERSION __HCMS_29xx_LITE_VERSION
 
 
 
@@ -153,13 +153,13 @@
  *  En caso de no ser utilizada el codigo de otras funciones sera simplificado
  * y por tanto ocupará menos espacio en memoria.
  **/
-#define __HCMS_29xx_COMPILE_LedDisplay_Scroll 		1
+#define __HCMS_29xx_COMPILE_LedDisplay_Scroll 		0
 
 
-#define __HCMS_29xx_COMPILE_LedDisplay_GetCursor 	1 	// Habilitar/Deshabilitar la Compilacion de la rutina LedDisplay_GetCursor
+#define __HCMS_29xx_COMPILE_LedDisplay_GetCursor 	0 	// Habilitar/Deshabilitar la Compilacion de la rutina LedDisplay_GetCursor
 #define __HCMS_29xx_COMPILE_LedDisplay_PrintUInt16 	1 	// Habilitar/Deshabilitar la Compilacion de la rutina LedDisplay_PrintUInt16
-#define __HCMS_29xx_COMPILE_LedDisplay_PrintInt16 	1	// Habilitar/Deshabilitar la Compilacion de la rutina LedDisplay_PrintInt16
-#define __HCMS_29xx_COMPILE_LedDisplay_PrintFloat 	1	// Habilitar/Deshabilitar la Compilacion de la rutina LedDisplay_PrintFloat
+#define __HCMS_29xx_COMPILE_LedDisplay_PrintInt16 	0	// Habilitar/Deshabilitar la Compilacion de la rutina LedDisplay_PrintInt16
+#define __HCMS_29xx_COMPILE_LedDisplay_PrintFloat 	0	// Habilitar/Deshabilitar la Compilacion de la rutina LedDisplay_PrintFloat
 
 
 
@@ -182,8 +182,8 @@
 
 /** Chip Enable pin Macros **/
 
-#define _HCMS_29xx_DISPLAY_CE  		GP4       	// Chip Enable Port/Lat bit register
-#define _HCMS_29xx_DISPLAY_CE_Dir  	TRISIO4   	// Chip Enable Tris bit register
+#define _HCMS_29xx_DISPLAY_CE  		GP5       	// Chip Enable Port/Lat bit register
+#define _HCMS_29xx_DISPLAY_CE_Dir  	TRISIO5   	// Chip Enable Tris bit register
 
 /** Reset pin Macros (optionaly)**/
 
