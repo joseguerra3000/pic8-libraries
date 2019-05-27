@@ -473,10 +473,7 @@ void LCD_SetCursorPosition( uint8_t line, uint8_t row );
 */
 #define LCD_CursorShiftRight()  LCD_CommandWrite(LCD_CMD_CURSOR_SHIFT_RIGHT)
 
-
-
 #ifdef __cplusplus  // Provide C++ Compatibility
-
     }
 
 #endif
