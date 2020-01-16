@@ -9,54 +9,6 @@
 #define	__595_SHIFTREGISTER_CONFIG_H
 
 /**
- * @brief This macro can be used for SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT to 
- * compile the lite library version.
- * 
- * @see SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT macro
- * @see __SHIFT_REGISTER_595_VERSION_NORMAL macro
- * 
- * <p><b> Example </b></p>
- * <code>
- * // Compile Lite library version <br>
- * #define SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT __SHIFT_REGISTER_595_VERSION_LITE
- * </code>
- */
-#define __SHIFT_REGISTER_595_VERSION_LITE   0x01 
-
-/**
- * @brief This macro can be used for SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT to 
- * compile the normal library version.
- * 
- * @see SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT macro
- * @see __SHIFT_REGISTER_595_VERSION_LITE macro
- * 
- * <p><b> Example </b></p>
- * <code>
- * // Compile normal library version <br>
- * #define SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT __SHIFT_REGISTER_595_VERSION_NORMAL
- * </code>
- */
-#define __SHIFT_REGISTER_595_VERSION_NORMAL 0x02
-
-
-/**
- * @brief This macro fix the library version to be compiled
- * 
- * @see __SHIFT_REGISTER_595_VERSION_LITE macro
- * @see __SHIFT_REGISTER_595_VERSION_NORMAL macro
- * 
- * <p><b> Example </b></p>
- * <code>
- * // Compile Lite library version <br>
- * #define SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT __SHIFT_REGISTER_595_VERSION_LITE
- * </code> 
- * 
- */
-#define SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT __SHIFT_REGISTER_595_VERSION_LITE
-
-
-#if SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT == __SHIFT_REGISTER_595_VERSION_LITE
-/**
  * @brief 
  * This macro define the microcontroller's pin attached to 596's DS(Serial data) input 
  * <p><b>Example</b></p>
@@ -121,9 +73,6 @@
  * </code>
  */
 #define __595ShiftRegister_STROBE_Dir   TRISIO2
-
-
-#endif // SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT
 
 
 /**

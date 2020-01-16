@@ -9,7 +9,6 @@
  * multiplexacion
  * 
  * Conexiones:
- * 
  * +------------+           +--------------+   
  * |    PIC  Rx0|-----------| a    Dos     |
  * |         Rx1|-----------| b Pantallas  | 
@@ -21,14 +20,12 @@
  * |         Rx7|-----------| CC(Cat comun)|
  * +------------+           +--------------+
  * Nota: Los pines CC tienen un inversor entre ellos para que 
- *  cuando uno encienda, el otro se apage.
+ *  cuando un visualizador encienda, el otro se apage.
  */
-
-#include <stdint.h>
-
 #ifndef _SSD2_H
 #define	_SSD2_H
 
+#include <stdint.h>
 
 /**
  * Objeto SSD
@@ -40,11 +37,10 @@ typedef struct{
     volatile uint8_t *port; // puerto utilizado
 } ssd_t;
 
-
 /**
  * @Descripcion: 
- *   Recibe un puntero al objeto SSD y la direccion del puerto a utilizar y lo 
- *  configura para su uso.
+ *   Recibe un puntero al objeto SSD y la direccion del puerto a 
+ *  utilizar y lo configura para su uso.
  * 
  * @Param
  *  - ssd: puntero al objeto ssd_t a configurar
@@ -55,9 +51,10 @@ typedef struct{
  *  - 0: Si el puerto no esta configurado correctamente 
  * 
  * @Notas:
- *   - Los canales analogicos, del puerto a utilizar, deben ser deshabilitados
- *   - Un error de configuracion puede ser por canales analogicos no apagados 
- *   o por que el puerto no es valido.
+ *   - Los canales analogicos, del puerto a utilizar, deben ser 
+ *   deshabilitados
+ *   - Un error de configuracion puede ser por canales analogicos no  
+ *   apagados o por que el puerto no es valido.
  * 
  * @Ejemplo:
  *  if( !SSD_Initialize( &mySSD, &PORTB ) ){
@@ -65,7 +62,6 @@ typedef struct{
  *  }
  **/
 __bit SSD_Initialize( ssd_t* ssd, volatile uint8_t *port );
-
 
 /**
  * @Descripcion: 
