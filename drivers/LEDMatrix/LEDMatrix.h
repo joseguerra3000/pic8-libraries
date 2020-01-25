@@ -82,22 +82,40 @@ extern "C" {
     
     /**
      * @desc Modificar un pixel de una matriz
-     * @param disp - especifica en que matriz actuar. 
+     * @param disp - especifica en que matriz actuar. Valor: 0-NUMBER_OF_MATRIX 
      * @param pixel - OR entre dos elementos de los enum: ROWS y COLS
      * @param value - 1 encender, 0 apagar
      * 
      * @note Si la opcion autoflush no esta activada es necesario ejecutar
      * la rutina LEDMatrix_Flush(disp) para efectuar los cambios.
+     *
+     * @example
+     * <code>
+     * LEDMatrix_DrawPixel( 0, ROW_1 | COL_2, true );   // enciende el led de la
+     *                                                  // tercera columna de la
+     *                                                  // segunda fila de la
+     *                                                  // primera matriz.
+     * </code>
      */
     void LEDMatrix_DrawPixel( uint8_t disp, uint8_t pixel, bool value );
     
     /**
      * Muestra un patron de leds en una matriz
      * @param disp - matriz a modificar
+     * @param stCol - columna inicial
      * @param m - Arreglo de 8 elementos que contiene el patron
      * a mostrar en la matriz.
+     * @param cnt - cantidad de columnas a escribir
+     * @example
+     *  <code>
+     *   uint8_t pp[] = { 0xFF, 0xAA, 0xFF };
+     *   LEDMatrix_DrawMatrix(0, 2, pp, 3); // en la primera matriz
+     *                                      // empezando en la columna 2
+     *                                      // dibujar el patron pp
+     *                                      // de 3 columnas de longitud
+     *  </code>      
      */
-    void LEDMatrix_DrawMatrix( uint8_t disp, uint8_t *m );
+    void LEDMatrix_DrawMatrix( uint8_t disp, uint8_t stCol, uint8_t *m,  uint8_t cnt );
     
     /**
      * Modifica la columna especificada
@@ -107,6 +125,13 @@ extern "C" {
      * 
      * @note Si la opcion autoflush no esta activada es necesario ejecutar
      * la rutina LEDMatrix_Flush(disp) para efectuar los cambios.
+     * 
+     * @example
+     * <code>
+     *    LEDMatrix_DrawCol( 1, 0, 0b10101010 );  // alterna los leds de 
+     *                                                  // la primera columna de
+     *                                                  // de la segunda matrix
+     * </code>
      */
     void LEDMatrix_DrawCol( uint8_t disp, uint8_t col, uint8_t value );
     
@@ -117,6 +142,11 @@ extern "C" {
      * @note Si la opcion autoflush no esta activada es necesario ejecutar
      * la rutina LEDMatrix_Flush o LEDMatrix_FlushAll para efectuar los cambios
      * en la matriz.
+     * 
+     * @example
+     * <code>
+     * LEDMatrix_Clear( 2 ); //apaga todos los leds de la tercera matriz
+     * </code>
      */
     void LEDMatrix_Clear( uint8_t disp );
     
@@ -127,6 +157,11 @@ extern "C" {
      * @note Si la opcion autoflush no esta activada es necesario ejecutar
      * la rutina LEDMatrix_Flush o LEDMatrix_FlushAll para efectuar los cambios
      * en la matriz.
+     * 
+     * @example
+     * <code>
+     * LEDMatrix_ClearAll(); //apaga todos los leds de todas las matrices
+     * </code>
      */
     void LEDMatrix_ClearAll();
     
@@ -137,6 +172,12 @@ extern "C" {
      * @param mode - modo de operacion. Valores:
      *      MODE_SHUTDOWN (Pone la matriz en modo de bajo consumo),
      *      MODE_NORMAL (La matriz funciona normalmente)
+     *
+     * @example
+     * <code>
+     * LEDMatrix_SetMode( 0,  MODE_SHUTDOWN); // pone la primera matriz en modo
+     *                                        // de bajo consumo   
+     * </code>
      */
     void LEDMatrix_SetMode( uint8_t disp, uint8_t mode );
     
@@ -145,6 +186,11 @@ extern "C" {
      * de Draw y Clear modifican automaticamente la matriz de lo contrario es
      * necesario ejecutar las rutinas LEDMatrix_Flush o LEDMatrix_FlushAll.
      * @param mode: 1 activar, 0 desactivar
+     * 
+     * @example
+     * <code>
+     * LEDMatrix_AutoFlush(true); // activa el auto refrescamiento   
+     * </code>
      */
     void LEDMatrix_AutoFlush( _Bool mode );
     
@@ -163,18 +209,37 @@ extern "C" {
      * 
      * @param intensity Especifica la intensidad del brillo de los leds. [0-15]
      * 
+     * @example
+     * <code>
+     * LEDMatrix_SetIntensity(0); // brillo de los leds al minimo   
+     * </code>
      **/
     void LEDMatrix_SetIntensity( uint8_t intensity );
     
     /**
      * Actualiza la informacion del buffer hacia la matiz
      * @param disp - matriz 
+     * 
+     * @example
+     * <code>
+     *  LEDMatrix_AutoFlush(false);             // desactivar el auto-refrescamiento
+     *  LEDMatrix_DrawCol( 1, 0, 0b10101010 );  // se modifica sol el buffer
+     *  LEDMatrix_Flush( 1 );                   // actualizar la segunda matriz 
+     * </code>
      */
     void LEDMatrix_Flush( uint8_t disp );
 
     /**
      * Actualiza la informacion del buffer de todas las matrices
      * @param disp - matriz 
+     *
+     * @example
+     * <code>
+     *  LEDMatrix_AutoFlush(false);             // desactivar el auto-refrescamiento
+     *  LEDMatrix_DrawCol( 1, 0, 0b10101010 );  // se modifica sol el buffer
+     *  LEDMatrix_DrawCol( 0, 5, 0b11011011 );  // se modifica sol el buffer
+     *  LEDMatrix_FlushAll( );                  // actualizar todas las matrices 
+     * </code>
      */
     void LEDMatrix_FlushAll( );
     

@@ -5,15 +5,28 @@
 #include "LEDMatrix_config.h"
 #include "system.h"
 
+// Envia una palabra (16-bits) utilizando la funcion SPI especificada en el
+// archivo de cabecera LEDMatrix_config.h 
 #define writeWord( reg, value ) do{         \
                         sendByte(reg);      \
+                        while( isBusy() );  \
                         sendByte(value);    \
+                        while( isBusy() );  \
                         }while(0)
 
-uint8_t buffer[NUMBER_OF_MATRIX*8];
-__bit autoFlush;
-uint8_t upper, i;
-uint8_t *offset;
+uint8_t buffer[NUMBER_OF_MATRIX*8]; // buffer de matrices 
+__bit autoFlush;                    // modo autoflush
+
+uint8_t upper, i;                   // variables auxiliares
+uint8_t *offset;                    
+
+/**
+ * @desc Asigna valor a un registro especifico de la matriz indicada 
+ * @param disp - Especifica en que matriz actuar. Valor: 0-NUMBER_OF_MATRIX 
+ * @param reg - Especifica que registro modificar. Un elemento del enum LEDMAT_REGISTER
+ * @param value - Valor para el registro 
+ * 
+ */
 
 static void setRegister( uint8_t disp, LEDMAT_REGISTER reg, uint8_t value ){
     disp++;
@@ -27,6 +40,12 @@ static void setRegister( uint8_t disp, LEDMAT_REGISTER reg, uint8_t value ){
     CS = 1;
 }
 
+/**
+ * @desc Asigna valor a un registro especifico de todas las matriz 
+ * @param reg - Especifica que registro modificar. Un elemento del enum LEDMAT_REGISTER
+ * @param value - Valor para el registro 
+ * 
+ */
 static void setRegisterForAll( LEDMAT_REGISTER reg, uint8_t value ){
     CS = 0;
     for( uint8_t i = NUMBER_OF_MATRIX; i ; i-- ){
@@ -36,6 +55,9 @@ static void setRegisterForAll( LEDMAT_REGISTER reg, uint8_t value ){
     
 }
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
 void LEDMatrix_Initialize( ){
     spiInit();
     CS_TRIS = 0;
@@ -58,6 +80,10 @@ void LEDMatrix_Initialize( ){
 
 /** Draw Functions **/
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
+
 void LEDMatrix_DrawPixel( uint8_t disp, uint8_t pixel, bool value ){
     if( disp >= NUMBER_OF_MATRIX )
         return;
@@ -71,6 +97,10 @@ void LEDMatrix_DrawPixel( uint8_t disp, uint8_t pixel, bool value ){
         LEDMatrix_Flush(disp);
 }
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
+
 void LEDMatrix_DrawCol( uint8_t disp, uint8_t col, uint8_t value ){
     if( disp >= NUMBER_OF_MATRIX || col > 7 )
         return;
@@ -82,11 +112,17 @@ void LEDMatrix_DrawCol( uint8_t disp, uint8_t col, uint8_t value ){
 
 }
 
-void LEDMatrix_DrawMatrix( uint8_t disp, uint8_t *m ){
-    offset = buffer + (disp<<3);
+/**
+ * Ver cabecera LEDMatrix.h
+ */
+void LEDMatrix_DrawMatrix( uint8_t disp, uint8_t stCol, uint8_t *p, uint8_t cnt ){
+    if( disp >= NUMBER_OF_MATRIX || stCol > 7 )
+        return;
     
-    for( i = 0; i < 8; i++ ){
-        *offset = m[i];
+    offset = buffer + (disp<<3) + stCol;
+    
+    for( i = 0; i < cnt; i++ ){
+        *offset = p[i];
         offset++;
     }
     
@@ -94,20 +130,27 @@ void LEDMatrix_DrawMatrix( uint8_t disp, uint8_t *m ){
         LEDMatrix_Flush(disp);
 }
 
-
+/**
+ * Ver cabecera LEDMatrix.h
+ */
 void LEDMatrix_Clear(uint8_t disp){
-    disp <<= 3;
-    offset = buffer+disp;
+    if( disp >= NUMBER_OF_MATRIX )
+        return;
+        
+    offset = buffer+(disp<<3);
     i = 8;
     while( i-- ){
         *offset = 0;
         offset++;
     }
-
+    
     if( autoFlush )
         LEDMatrix_Flush(disp);
 }
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
 void LEDMatrix_ClearAll(){
     i = NUMBER_OF_MATRIX << 3;
     while( i-- ){
@@ -119,15 +162,20 @@ void LEDMatrix_ClearAll(){
 
 }
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
 void LEDMatrix_Flush(uint8_t disp){
     offset = buffer + (disp<<3) +8;
     
     for( uint8_t c = 8; c; c-- ){ // por cada columna o digito
-        
         setRegister( disp, c, *(--offset) );
     }
 }
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
 void LEDMatrix_FlushAll( ){
     for( uint8_t c = 8; c; c-- ){ // por cada columna (o digito)
         CS = 0;
@@ -142,14 +190,23 @@ void LEDMatrix_FlushAll( ){
 
 /** Control Functions **/
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
 void LEDMatrix_AutoFlush( _Bool active ){
     autoFlush = active;
 }
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
 void LEDMatrix_SetIntensity(uint8_t intensity){
     setRegisterForAll( REG_INTENSITY, intensity );
 }
 
+/**
+ * Ver cabecera LEDMatrix.h
+ */
 void LEDMatrix_ShutdownAll(){
     setRegisterForAll( REG_MODE, MODE_SHUTDOWN );
 }

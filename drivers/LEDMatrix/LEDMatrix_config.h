@@ -26,7 +26,6 @@
 #define sendByte(x) SPISoft_SendByteMode00((x))
 
 // funcion para comprobar disponibilidad del bus spi
-// ( innecesario con SPIsoft)
 #define isBusy() false
 
 
