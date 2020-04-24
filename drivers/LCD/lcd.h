@@ -1,17 +1,13 @@
 /**
-  LCD Driver API Header File for 8bit PIC MCUs
+  @author Jose Guerra Carmenate
 
-  @Author
-    Jose Guerra Carmenate
+  @file lcd.h
 
-  @File Name
-    lcd.h
+  @brief This is the header file for LCD driver using PIC MCUs
 
-  @Summary
-    This is the header file for LCD driver using PIC MCUs
-
-  @Description
-    This header file provides APIs for driver for LCD.
+    This header file provides APIs for driver for LCD. This API 
+    can be used with any 8 bits PIC MCU using 6 GPIO pins. Pins are
+    defined on lcd_config.h header.
 */
 
 
@@ -32,24 +28,26 @@
  ******************************************************************************/
        
 /**
- * LCD Commands
+ @brief LCD Commands
+ 
+ Set of available commands for use with LCD display. LCD_CommandWrite 
+ routine must be used for send commands to LCD.
  **/
 typedef enum{
-    LCD_CMD_CLEAR_DISPLAY                           = 0x01u,
-    LCD_CMD_RETURN_HOME                             = 0x02u,
-    LCD_CMD_FUNCTION_SET_8BITSMODE_2LINES_5x8DOTS	  = 0x38u,
-    LCD_CMD_FUNCTION_SET_8BITSMODE_1LINE_5x8DOTS 	  = 0x30u,
-    LCD_CMD_FUNCTION_SET_4BITSMODE_2LINES_5X8DOTS	  = 0x28u,
-    LCD_CMD_FUNCTION_SET_4BITSMODE_1LINE_5X8DOTS	  = 0x20u,
-    LCD_CMD_FUNCTION_SET_4BITSMODE_1LINE_5X10DOTS   = 0x24u,	
-    LCD_CMD_DISPLAY_ON_CURSOR_ON                    = 0x0Eu,
-    LCD_CMD_DISPLAY_ON_CURSOR_BLINK                 = 0x0Fu,
-    LCD_CMD_DISPLAY_ON_CURSOR_OFF                   = 0x0Cu,
-    LCD_CMD_DISPLAY_SHIFT_LEFT                      = 0x18u,
-    LCD_CMD_DISPLAY_SHIFT_RIGHT                     = 0x1Cu,
-    LCD_CMD_CURSOR_SHIFT_LEFT                       = 0x10,
-    LCD_CMD_CURSOR_SHIFT_RIGHT                      = 0x14,
-   
+    LCD_CMD_CLEAR_DISPLAY                           = 0x01u,///< Clear Display command 
+    LCD_CMD_RETURN_HOME                             = 0x02u,///< Return Home command
+    LCD_CMD_FUNCTION_SET_8BITSMODE_2LINES_5x8DOTS	  = 0x38u,///< 8 bits mode with 2 lines command
+    LCD_CMD_FUNCTION_SET_8BITSMODE_1LINE_5x8DOTS 	  = 0x30u,///< 8 bits mode with 1 line command
+    LCD_CMD_FUNCTION_SET_4BITSMODE_2LINES_5X8DOTS	  = 0x28u,///< 4 bits mode with 2 lines command
+    LCD_CMD_FUNCTION_SET_4BITSMODE_1LINE_5X8DOTS	  = 0x20u,///< 4 bits mode with 1 lines command
+    LCD_CMD_FUNCTION_SET_4BITSMODE_1LINE_5X10DOTS   = 0x24u,///< 4 bits mode with 1 line and 5x10 dots chars command
+    LCD_CMD_DISPLAY_ON_CURSOR_ON                    = 0x0Eu,///< Cursor On command
+    LCD_CMD_DISPLAY_ON_CURSOR_BLINK                 = 0x0Fu,///< Cursor Blink command
+    LCD_CMD_DISPLAY_ON_CURSOR_OFF                   = 0x0Cu,///< Cursor Off command
+    LCD_CMD_DISPLAY_SHIFT_LEFT                      = 0x18u,///< Shift Left Display command
+    LCD_CMD_DISPLAY_SHIFT_RIGHT                     = 0x1Cu,///< Shift Right Display command
+    LCD_CMD_CURSOR_SHIFT_LEFT                       = 0x10, ///< Shift Left Cursor command
+    LCD_CMD_CURSOR_SHIFT_RIGHT                      = 0x14, ///< Shift Right Cursor command
 } LCD_CMD;
 
 /******************************************************************************
@@ -57,280 +55,188 @@ typedef enum{
  ******************************************************************************/
 
 /**
-  @Summary
+  @brief
     Initializes the LCD for 4bit Mode
 
-  @Description
-    This routine initializes the LCD.
-    This routine must be called before any other LCD routine is called.
+    This routine initializes the LCD, for this reason must be called 
+    before any other LCD routine is called.
     This routine should only be called once during system initialization.
 
-  @Preconditions
-    None
-  @Param
-    - lines: Number of lines on LCD
+  @pre
+    the lcd_config.h header file must be correctly configured. 
     
-    - row: Number of rows on LCD 
+  @param[in] lines Number of lines on LCD (1 or 2)
+  @param[in] row Number of rows on LCD 
 
-  @Returns
+  @return
     None
 
-  @Example
-    <code>
+  <b>Example</b>
+    @code
      LCD_Initialize( 2, 16 );
-    </code>
+    @endcode
 */
 void LCD_Initialize(uint8_t lines, uint8_t row);
 
 /**
-  @Summary
-    Send command to LCD 
+  @brief
+    Send one command to LCD 
+    
+    
+  @pre
+    'LCD_Initialize' routine must be called before.
 
-  @Description
-
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	- cmd: Command to LCD.
-		"For available command refer to enum LCD_CMD or datasheet"
+  @param[in] cmd: Command for send to LCD.
+		"For available command refer to enum LCD_CMD or LCD datasheet"
 	
-  @Returns
+  @return
     None
 
-  @Comment
-	None
-
-  @Example
-    <code>
+  <b>Example</b>
+    @code
     LCD_CommandWrite( LCD_CMD_CLEAR_DISPLAY );
-    </code>
+    @endcode
 */
 void LCD_CommandWrite( LCD_CMD cmd );
 
 /**
-  @Summary
-    Print a character on LCD 
+  @brief
+    Print a character on LCD's cursor position
 
-  @Description
+  @pre
+    LCD_Initialize routine must be called before.
 
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	- c: Character to print.
+  @param[in] c Character to print.
 		"Any printable character is valid"
-	
-  @Returns
-    None
 
-  @Comment
-	None
-
-  @Example
-    <code>
+  <b> Example </b>
+    @code
      LCD_PrintChar( 'w' ); //Print a w on LCD.
-    </code>
+    @endcode
 */
 void LCD_PrintChar( char c );
 
 /**
-  @Summary
-    Print a string on LCD 
+  @brief
+    Print a string on LCD's current cursor position
 
-  @Description
+  @pre
+    LCD_Initialize routine must be called before.
 
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	- string: String to print on LCD.
+  @param[in] string: String to print on LCD.
 	
-  @Returns
-    None
-
-  @Comment
-	None
-
-  @Example
-    <code>
+  <b>Example </b>
+    @code
     LCD_PrintString( "Alfa" );
-    </code>
+    @endcode
 */
 void LCD_PrintString( char *string );
 
 /**
-  @Summary
+  @brief
     Set the cursor position 
 
-  @Description
+  @pre
+    'LCD_Initialize' routine must be called before.
 
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	- line: Line to place the cursor.
+  @param[in] line Line to place the cursor.
+	@param[in] row Row to place the cursor
 	
-	- row : Row to place the cursor
-	
-  @Returns
-    None
-
-  @Comment
-    None
-
-  @Example
-    <code>
+  <b>Example </b>
+    @code
      LCD_SetCursorPosition( 0, 0 );
-    </code>
+    @endcode
 */
 void LCD_SetCursorPosition( uint8_t line, uint8_t row ); 
 
 /**
-  @Summary
-    Clear the LCD Screen 
+  @brief
+    Clear the LCD Screen. 
+    
+    Send a Clear Display command to LCD. This command put 
+    20H on all LCD RAM position.
 
-  @Description
+  @pre
+    'LCD_Initialize' routine must be called before.
 
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	  None
-	
-  @Returns
-    None
-
-  @Comment
-	  None
-
-  @Example
-    <code>
+  <b>Example </b>
+    @code
      LCD_Clear();
-    </code>
+    @endcode
 */
 #define LCD_Clear() LCD_CommandWrite(LCD_CMD_CLEAR_DISPLAY)
 
 /**
-  @Summary
+  @brief
     Move the cursor to first line first row position
-
-  @Description
+  
     This macro sets DDRAM address 0 into the address counter, and returns the 
   display to its original status if it was shifted. 
     The DDRAM contents do not change.
-  @Preconditions
-    'LCD_Initialize' must be called before.
+    
+  @pre
+    'LCD_Initialize' routine must be called before.
 
-  @Param
-	  None
-	
-  @Returns
-    None
-
-  @Comment
-	  None
-  @Example
-    <code>
+  <b>Example </b>
+    @code
      LCD_ReturnHome();
-    </code>
+    @endcode
 */
 #define LCD_ReturnHome() LCD_CommandWrite(LCD_CMD_RETURN_HOME)
 
 /**
-  @Summary
+  @brief
     Shift Display to the left side
 
-  @Description
+  @pre
+    'LCD_Initialize' routine must be called before.
 
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	  None
-	
-  @Returns
-    None
-
-  @Comment
-	  None
-  @Example
-    <code>
+  <b>Example </b>
+    @code
      LCD_DisplayShiftLeft();
-    </code>
+    @endcode
 */
 #define LCD_DisplayShiftLeft()  LCD_CommandWrite(LCD_CMD_DISPLAY_SHIFT_LEFT)
 
 /**
-  @Summary
+  @brief
     Shift Display to the right side
 
-  @Description
+  @pre
+    'LCD_Initialize' routine must be called before.
 
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	None
-	
-  @Returns
-    None
-
-  @Comment
-	None
-  @Example
-    <code>
+  <b>Example </b>
+    @code
      LCD_DisplayShiftRight();
-    </code>
+    @endcode
 */
 #define LCD_DisplayShiftRight()  LCD_CommandWrite(LCD_CMD_DISPLAY_SHIFT_RIGHT)
 
 /**
-  @Summary
+  @brief
     Shift Cursor to the left side
 
-  @Description
-
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	None
-	
-  @Returns
-    None
-
-  @Comment
-	  None
+  @pre
+    'LCD_Initialize' routine must be called before.
   
-  @Example
-    <code>
+  <b>Example </b>
+    @code
      LCD_CursorShiftLeft();
-    </code>
+    @endcode
 */
 #define LCD_CursorShiftLeft()  LCD_CommandWrite(LCD_CMD_CURSOR_SHIFT_LEFT)
 
 /**
-  @Summary
+  @brief
     Shift Cursor to the right side
 
-  @Description
+  @pre
+    'LCD_Initialize' routine must be called before.
 
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	None
-	
-  @Returns
-    None
-
-  @Comment
-	None
-  @Example
-    <code>
+  <b>Example </b>
+    @code
      LCD_CursorShiftRight();
-    </code>
+    @endcode
 */
 #define LCD_CursorShiftRight()  LCD_CommandWrite(LCD_CMD_CURSOR_SHIFT_RIGHT)
 

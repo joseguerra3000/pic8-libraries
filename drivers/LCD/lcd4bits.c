@@ -1,19 +1,15 @@
 /**
-  LCD Driver File
-
-  @Author
+  @author
     Jose Guerra Carmenate.
 
-  @File Name
-    lcd.c
+  @file lcd4bits.c
 
-  @Summary
-    This is the driver implementation file for the LCD driver with 4bits
-    interfaze using PIC MCUs 8bits.
+  @brief
+    This is the driver implementation file for the LCD API with 4bits
+    interfaze using 8bits PIC MCUs.
 
-  @Description
-    Compiler          :  XC8 1.45
-    MPLAB             :  MPLAB X 4.10
+  @note Compiler          :  XC8 2.00
+  @note MPLAB             :  MPLAB X 5.10
 */
 
 /******************************************************************************
@@ -25,7 +21,7 @@
 
 #include <xc.h>
 
-#include "../hardware.h"
+#include "device_config.h" // _XTAL_FREQ macro
 
 /******************************************************************************
  ************************ Section: LCD Module APIs ****************************
@@ -33,10 +29,9 @@
 
 
 /**
-  @Summary
+  @brief
     Send a High-to-Low Pusle at Enable Pin
 
-  @Description
     This macro send a High-to-Low Pusle at Enable Pin for pass data or command
  to LCD.
 */
@@ -48,10 +43,9 @@
 
 
 /**
-  @Summary
+  @brief
     Generate a Signal for send a command to the LCD.
 
-  @Description
     Drive RS pin to Low State and generate a clock pulse on EN pin
 */
 #define lcd_SendCmdSignal() do{ \
@@ -60,10 +54,9 @@
 } while(0)
 
 /**
-  @Summary
+  @brief
     Generate a Signal for send a data to the LCD.
 
-  @Description
     Drive RS pin to High State and generate a clock pulse on EN pin
 */
 #define lcd_SendDataSignal() do{  \
@@ -72,41 +65,27 @@
 } while(0)
 
 /**
-  @Summary
+  @brief
     Wait while LCD controller is busy.
 
-  @Description
-    if RW pin is used this routine check the busy flag state.
-    if RW is not used this routine make a delay of 1ms
-    
+  This macro generate a delay of 1 ms.    
 */
-#ifdef LCD_USE_RW
-inline void lcd_BusyCheck(){
-    uint8_t busyFlag;
-    //data bus as digital input
-    D4_tris = D5_tris = D6_tris = D7_tris = 1;
-    RS = 0;
-    RW = 1; // read
-
-    do{
-    	// read the high nibble
-      lcd_strobe(); 
-      __delay_us(10);
-      busyFlag = D7;
-      //perform the read of the low nibble
-      lcd_strobe();
-      __delay_us(10);
-    }while( busyFlag );
-    
-    //data bus as digital output
-    D4_tris = D5_tris = D6_tris = D7_tris = 0;
-
-}
-#else
 #define lcd_BusyCheck() do{ __delay_ms(1); }while(0)
-#endif
+
+/**
+  @brief
+    Put the low nibble of data on LCD data bus. 
 
 
+  @pre
+    'LCD_Initialize' must be called before.
+
+  @param[in] data data to put on LCD data bus.
+		
+  @return
+    None
+
+*/
 static void lcd_PutNibble( uint8_t data ){
   D4 = data & 1;
   data >>=1;
@@ -116,32 +95,26 @@ static void lcd_PutNibble( uint8_t data ){
   data >>=1;
   D7 = data & 1;
 }
+
 /**
-  @Summary
+  @brief
     Send data to LCD 
 
-  @Description
+  @pre
+    'LCD_Initialize' routine must be called before.
 
-  @Preconditions
-    'LCD_Initialize' must be called before.
-
-  @Param
-	- data: data to LCD.
+  @param x: data to send to LCD.
 		
-  @Returns
-    None
-
-  @Comment
-	None
 */
 #define lcd_DataWrite(x) LCD_PrintChar(x)
+
 
 /* See header file for especifications */
 void LCD_Initialize( uint8_t lines, uint8_t row ){
   // data bus has output
   D4_tris = D5_tris = D6_tris = D7_tris = 0;
   
-  //control bus has input
+  //control bus has output
   RS_tris = EN_tris = 0;
     
   __delay_ms(30u);
@@ -187,9 +160,7 @@ void LCD_PrintChar( char a ){
 /* See header file for especifications */
 void LCD_CommandWrite( LCD_CMD cmd ){
   lcd_BusyCheck();
-#ifdef LCD_USE_RW
-  RW = 0;
-#endif
+
   lcd_PutNibble( ((uint8_t)cmd)>>4u );
   lcd_SendCmdSignal();
 
