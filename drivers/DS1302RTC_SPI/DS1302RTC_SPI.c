@@ -1,24 +1,116 @@
-/* 
- * File:   DS1302RTC_SPI.c
- * Author: Jose Guerra Carmenate
- * Comments:
- * Revision history: 
+/** 
+ * @file:   DS1302RTC_SPI.c
+ * @author: Jose Guerra Carmenate
+ * 
+ * @brief Implementacio'n de la API DS1302RTC_SPI
  */
 
 
 #include "DS1302RTC_SPI.h"
 #include "DS1302RTC_SPI_config.h"
-#include "spi.h"
-#include "util/utils.h"
+#include "device_config.h"
+#include "../peripheral/spi.h"
+#include "../util/utils.h"
 
-#define _XTAL_FREQ 20000000
+#include <xc.h>
 
-volatile unsigned char ce_port;
-uint8_t ce_mask;
+//volatile unsigned char ce_port;
+//uint8_t ce_mask;
+
+
+/* Section: Macros */
+
+// Read/Write operations
+
+/**
+ @brief Usado para definir una operacion de lectura
+*/
+#define _DS1302_READ  1u
+
+/**
+ @brief Usado para definir una operacion de escritura
+*/
+#define _DS1302_WRITE 0u
+
+/**
+ @brief Bit de halt clock ubicado en la posicion 7 del registro de segundos
+*/
+#define _DS1302_CH_bit       0x07u // clock halt flag ( 1 - halt, 0 - start)
+
+/**
+ @brief Mapa de Bits del bit halt clock ubicado en la posicion 7 del registro de segundos
+*/
+#define _DS1302_CH          (1u<<(_DS1302_CH_bit))
+
+/**
+ @brief Bit de write-protect ubicado en la posicion 7 del registro de control
+*/
+#define _DS1302_WP_bit       0x07u // write-protect ( 1 - active, 0 - no active)
+
+/**
+ @brief Mapa de bits del bit write-protect ubicado en la posicion 7 del registro de control
+*/
+#define _DS1302_WP           (1u<<(_DS1302_WP_bit))
+
+/**
+ @brief Bit de AM/PM selection ubicado en la posicion 5 del registro de hora
+*/
+#define _DS1302_AM_PM_bit    0x05u
+
+/**
+ @brief Mapa de bits del bit AM/PM selection ubicado en la posicion 5 del registro de hora
+*/
+#define _DS1302_AM_PM        (1u<<(_DS1302_AM_PM_bit))
+
+// Command Byte Options
+//         bits :   7     6      5    4    3    2    1      0  
+// Command byte : | 1 | RAM/CK | A4 | A3 | A2 | A1 | A0 | RD/WR |
+
+/**
+ @brief Utilizado para realizar operaciones sobre RAM
+*/
+#define _DS1302_RAM          0x80u // operation over RAM data 
+
+/**
+ @brief Utilizado para realizar operaciones sobre RTC
+*/
+#define _DS1302_CK           0x00u // operation over clock/calendar data
+
+/**
+ @brief Usado para operacion de lectura
+*/
+#define _DS1302_RD           0x01u // read operation
+
+/**
+ @brief Usado para operacion de escritura
+*/
+#define _DS1302_WR           0x00u // write operation
+
 
 // prototypes for statics functions
+/**
+ @brief Invierte la posicion de los bits de un byte
+ 
+ Intercambia los bits: 0-7, 1-6, 2-5, 3-4.
+ 
+ @param[in] byte El byte a invertir
+ 
+ @return El byte invertido
+*/
 static uint8_t BYTE_Invert( uint8_t byte);
+
+/**
+ @brief Convierte un entero de 8 bits de notacion BCD a decimal
+ @param[in] x entero en notacion BCD
+ @return entero en notacio'n decimal
+*/
 static uint8_t bcd2dec( uint8_t x );
+
+/**
+ @brief Convierte un entero de 8 bits de notacion decimal a BCD
+ @param[in] x entero en notacion decimal
+ @return entero en notacio'n bcd
+*/
 static uint8_t dec2bcd( uint8_t x );
 
 // API functions
@@ -103,7 +195,7 @@ uint8_t DS1302RTC_GetYear(){
     return bcd2dec(DS1302RTC_Read( _DS1302_ADDRESS_RTC_YEAR ));
 }
 
-void DS1302RTC_GetTimeAndDate( DS1302_time *t ){
+void DS1302RTC_GetTimeAndDate( ds1302_time_t *t ){
     _DS1302_CE_PORT = 1;    // start comunication    
     
     __delay_us(4);
@@ -116,7 +208,7 @@ void DS1302RTC_GetTimeAndDate( DS1302_time *t ){
     
     t->seconds = bcd2dec( BYTE_Invert(SPI_ReadByte()) & 0x7F); // ignora el bit CH
     t->minutes = bcd2dec( BYTE_Invert(SPI_ReadByte()));
-    t->hour    = bcd2dec( BYTE_Invert(SPI_ReadByte()) & 0x1F); // ignora los bits 12/24 y AM/PM
+    t->hour    = bcd2dec( BYTE_Invert(SPI_ReadByte()) ); // ignora los bits 12/24 y AM/PM
     t->mday    = bcd2dec( BYTE_Invert(SPI_ReadByte()) );
     t->month   = bcd2dec( BYTE_Invert(SPI_ReadByte()) );
     t->wday    = BYTE_Invert(SPI_ReadByte());                // la codificacion bcd y dec coinsiden
@@ -146,17 +238,8 @@ void DS1302RTC_SetMinutes(uint8_t minutes){
 void DS1302RTC_SetHours(uint8_t hours){
     if( hours > 23u )
         return;
-    uint8_t old_value = DS1302RTC_Read( _DS1302_ADDRESS_RTC_HOURS );
-    old_value &= _DS1302_HOURS_FORMAT_12HOUR;
-    if( old_value ){
-        if( hours > 12 ){
-            hours -= 12;
-            old_value |= _DS1302_AM_PM; //Activar bit AM_PM
-        }
-    }
     
-    old_value |= dec2bcd(hours);
-    DS1302RTC_Write( _DS1302_ADDRESS_RTC_HOURS, old_value );
+    DS1302RTC_Write( _DS1302_ADDRESS_RTC_HOURS, dec2bcd(hours) );
 }
 
 void DS1302RTC_SetDate(uint8_t date){
@@ -183,7 +266,7 @@ void DS1302RTC_SetYear( uint8_t year ){
     DS1302RTC_Write( _DS1302_ADDRESS_RTC_YEAR, dec2bcd(year) );
 }
 
-void DS1302RTC_SetTimeAndDate( DS1302_time t ){
+void DS1302RTC_SetTimeAndDate( ds1302_time_t t ){
     
     t.seconds = BYTE_Invert( dec2bcd(t.seconds) );
     t.minutes = BYTE_Invert( dec2bcd(t.minutes) );
@@ -224,6 +307,7 @@ void DS1302RTC_HaltRTC(){
 
 void DS1302RTC_StartRTC(){
     uint8_t old = DS1302RTC_Read( _DS1302_ADDRESS_RTC_SECONDS );
+    old++;
     DS1302RTC_Write( _DS1302_ADDRESS_RTC_SECONDS, old & (~_DS1302_CH) );
 }
 
@@ -236,7 +320,7 @@ __bit DS1302RTC_GetWriteProtectionState(){
 }
 
 void DS1302RTC_SetWriteProtectionState( _Bool state ){
-    uint8_t old;
+    uint8_t old = 0;
     if(state == 1)
         old |= _DS1302_WP;
 
