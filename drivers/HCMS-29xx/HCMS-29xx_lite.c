@@ -1,24 +1,25 @@
 /**
-  HCMS-29xx Display Lite Version Driver File
+  HCMS-29xx Display Driver Implementation File
 
-  @Author
+  @author
     Jose Guerra Carmenate.
 
-  @File Name
+  @file
     HCMS-29xx_lite.c
 
-  @Summary
+  @brief
     This is the driver implementation file for the HCMS-29xx lite version driver using PIC MCUs 8bits.
     List of compatible displays:
+		@verbatim
         HCMS-2905    HCMS-2902    HCMS-2904    HCMS-2901    HCMS-2903
         HCMS-2915    HCMS-2912    HCMS-2914    HCMS-2911    HCMS-2913
         HCMS-2925    HCMS-2922    HCMS-2924    HCMS-2921    HCMS-2923
         HCMS-2965    HCMS-2962    HCMS-2964    HCMS-2961    HCMS-2963
         HCMS-2975    HCMS-2972    HCMS-2974    HCMS-2971    HCMS-2973
-
-  @Description
-    Compiler          :  XC8 2.00
-    MPLAB             :  MPLAB X 5.10
+		@endverbatim
+    
+	@note Compiler          :  XC8 2.00
+  @note MPLAB             :  MPLAB X 5.10
 */
 
 
