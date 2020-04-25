@@ -1,35 +1,38 @@
-/*
- * File:   SSD2.c
- * Author: jose
+/**
+ * @file:   SSD2.c
+ * @author: jose
  *
- * Created on 17 de mayo de 2019, 16:40
+ * @date 17 de mayo de 2019, 16:40
  * 
- *  Archivo fuente del Controlador SSD2 (Seven Segment Display 
- * Double) para pantallas 7 segmentos con dos visualizadores y un 
- * pin de multiplexacion. 
- *  Contiene todas las implementaciones necesarias para el 
+ * @brief Archivo fuente del Controlador SSD2 para pantallas 7 
+ segmentos con dos visualizadores y un pin de multiplexacion. 
+ *  
+ * Este archivo contiene todas las implementaciones necesarias para el 
  * controlador.
  */
 #include <xc.h>
 #include "SSD2.h"
 
+/**
+ @brief tabla de conversion de BCD a 7 Segmentos
+*/
 const uint8_t _bcd_to_7seg[] = {
   // gfedcba
-  0b00111111, // 0
-  0b00000110, // 1
-  0b01011011, // 2
-  0b01001111, // 3
-  0b01100110, // 4
-  0b01101101, // 5
-  0b01111101, // 6
-  0b00000111, // 7
-  0b01111111, // 8
-  0b01101111  // 9
+  0b00111111, ///< 0
+  0b00000110, ///< 1
+  0b01011011, ///< 2
+  0b01001111, ///< 3
+  0b01100110, ///< 4
+  0b01101101, ///< 5
+  0b01111101, ///< 6
+  0b00000111, ///< 7
+  0b01111111, ///< 8
+  0b01101111  ///< 9
 };
 
 /**
- * @Descripcion
- * Retorna un puntero al registro TRISx correscondiente
+ * @brief
+ * Retorna un puntero al registro TRISx correspondiente
  * con el registro PORTx utilizado como parametro
  **/
 volatile uint8_t *__getTRIS( volatile uint8_t *port ){
@@ -66,6 +69,7 @@ volatile uint8_t *__getTRIS( volatile uint8_t *port ){
     return 0;
 }
 
+/* Ver archivo de cabecera SSD2.h */
 __bit SSD_Initialize( ssd_t *ssd, volatile uint8_t *__port ){
   *__getTRIS(__port) = 0x00;  // configura puerto como salida
 
@@ -80,6 +84,7 @@ __bit SSD_Initialize( ssd_t *ssd, volatile uint8_t *__port ){
   return 1;
 }
 
+/* Ver archivo de cabecera SSD2.h */
 void SSD_PrintNumber( ssd_t* ssd, uint8_t number ){
   if( number > 99u )                     // no se puede mostrar
     return;
@@ -87,12 +92,12 @@ void SSD_PrintNumber( ssd_t* ssd, uint8_t number ){
   ssd->digit0 = _bcd_to_7seg[number/10]; // digito decenas
 }
 
-
+/* Ver archivo de cabecera SSD2.h */
 inline void SSD_Clear( ssd_t* ssd ){
   ssd->digit0 = ssd->digit1 = 0;       // apagar todos los segmentos
 }
 
-
+/* Ver archivo de cabecera SSD2.h */
 inline void SSD_Mux( ssd_t *ssd ){
   uint8_t port = *(ssd->port);    // temporal para puerto
   if( port & 0x80 )               // digito activo?
