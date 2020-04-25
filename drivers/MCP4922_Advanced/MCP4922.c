@@ -1,35 +1,32 @@
 /**
-  MCP4922 Driver File
+  @author Jose Guerra Carmenate.
 
-  @Author
-    Jose Guerra Carmenate.
+  @file MCP4922.c
 
-  @File Name
-    MCP4922.c
+  @brief   MCP4922 Driver File
+  
+  This is the driver implementation file for the MCP4922 driver using PIC MCUs 8bits.
 
-  @Summary
-    This is the driver implementation file for the MCP4922 driver using PIC MCUs 8bits.
-
-  @Description
-    Compiler          :  XC8 1.45
-    MPLAB             :  MPLAB X 4.10
+  @note Compiler          :  XC8 2.00
+  @note MPLAB             :  MPLAB X 5.10
 */
 
 /******************************************************************************
  ************************ Section: Included Files *****************************
  ******************************************************************************/
 
-#ifdef _16F887
-
 #include "MCP4922.h"
 #include <xc.h>
 #include <stddef.h>
 #include "../util/utils.h"
 /******************************************************************************
- ************************** Section: Constants ********************************
+ ************************** Section: Variables ********************************
  ******************************************************************************/
 
-static MCP4922_t *ptr_dac = NULL; //Active MCP4922
+/**
+ @brief Pointer to selected mcp4922_t struct
+*/
+static mcp4922_t *ptr_dac = NULL; //Active MCP4922
 
 /******************************************************************************
  ********************** Section: MCP4922 Module APIs **************************
@@ -37,8 +34,8 @@ static MCP4922_t *ptr_dac = NULL; //Active MCP4922
 
 
 /* See header file for especifications */
-MCP4922_t MCP4922_MCP4922( volatile uint8_t* _port, uint8_t _bit, void (*sendByte) (uint8_t), bool(*isBusy)(void)){
-    MCP4922_t dac;
+mcp4922_t MCP4922_MCP4922( volatile uint8_t* _port, uint8_t _bit, void (*sendByte) (uint8_t), bool(*isBusy)(void)){
+    mcp4922_t dac;
     dac.IsBusy = isBusy;
     dac.SendCommand = sendByte;
     dac.SS_port = _port;
@@ -49,7 +46,7 @@ MCP4922_t MCP4922_MCP4922( volatile uint8_t* _port, uint8_t _bit, void (*sendByt
 }
 
 /* See header file for especifications */
-inline void MCP4922_SetActive(MCP4922_t* dac){
+inline void MCP4922_SetActive(mcp4922_t* dac){
     ptr_dac = dac;
 }
 
@@ -84,9 +81,6 @@ bool MCP4922_WriteData( MCP_DAC_SELECT adc,  uint16_t data ){
     
     return true;
 }
-
-
-#endif
 /**
  End of File
 */
