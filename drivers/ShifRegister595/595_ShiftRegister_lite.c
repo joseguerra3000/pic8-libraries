@@ -1,16 +1,19 @@
-/*
- * File:   595_ShiftRegister_lite.c
- * Author: jose
+/**
+ * @file  595_ShiftRegister_lite.c
+ * @author Jose Guerra Carmenate
  *
- * Created on 15 de febrero de 2019, 21:34
+ * @date 15 de febrero de 2019, 21:34
+ *
+ * @brief Este archivo contiene la implementacio'n de la
+ * API para registro de desplazamiento 595.
+ *
  */
 
-
-#if SHIFT_REGISTER_595_LIBRARY_VERSION_SELECT == __SHIFT_REGISTER_595_VERSION_LITE
-
-#include <xc.h>
 #include "595_ShiftRegister.h"
 #include "595_ShiftRegister_config.h"
+
+#include <xc.h>
+#include "device_config.h" // _XTAL_MACRO define
 
 #define DATA    __595ShiftRegister_DATA
 #define CLK     __595ShiftRegister_CLOCK
